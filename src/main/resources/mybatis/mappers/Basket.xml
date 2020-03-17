@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.simple.shop.repository.BasketDAO">
+	<resultMap type="basketVO" id="basketResult">
+		<id property="id" column="id"/>
+		<result property="userId" column="user_id"/>
+		<result property="productId" column="product_id"/>
+		<result property="createdAt" column="created_at"/>
+	</resultMap>
+	
+	<select id="findBasketByUserId" parameterType="Long" resultMap="basketResult">
+		SELECT * FROM basket WHERE user_id=#{userId} ORDER BY created_at DESC
+	</select>
+	
+	<select id="findBasketByBasketVO" parameterType="basketVO" resultMap="basketResult">
+		SELECT * FROM basket WHERE user_id=#{userId} AND product_id =#{productId}
+	</select>
+	
+	<delete id="deleteBasketByProductId" parameterType="Long">
+		DELETE FROM basket WHERE user_id=#{userId} AND product_id=#{productId} 
+	</delete>
+	
+	<insert id="insertBasket" parameterType="basketVO">
+		INSERT INTO basket (user_id, product_id) VALUES (#{userId},#{productId})
+	</insert>
+	
+</mapper>

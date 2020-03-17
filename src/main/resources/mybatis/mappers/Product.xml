@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.simple.shop.repository.ProductDAO">
+	<resultMap type="productVO" id="productResult">
+		<id property="id" column="product_id" />
+		<result property="name" column="product_name" />
+		<result property="content" column="content" />
+		<result property="price" column="price" />
+		<result property="salePrice" column="sale_price" />
+		<result property="image" column="image" />
+		<result property="createdAt" column="product_created_at" />
+		<association property="user" resultMap="userResult" />
+	</resultMap>
+
+	<resultMap type="userVO" id="userResult">
+		<id property="id" column="user_id" />
+		<result property="email" column="email" />
+		<result property="name" column="user_name" />
+		<result property="birth" column="birth" />
+		<result property="password" column="password" />
+		<result property="gender" column="gender" />
+		<result property="createdAt" column="user_created_at" />
+	</resultMap>
+
+	<select id="findProducts" resultMap="productResult" parameterType="Long">
+		<![CDATA[
+			SELECT R1.*FROM(
+				SELECT product.id as product_id, product.name as product_name, product.content, product.price, product.sale_price, product.image, product.created_at as product_created_at
+				From product
+				ORDER BY product.created_at
+			)R1
+			LIMIT 6 OFFSET #{morePage}
+		]]>
+	</select>
+
+	<select id="findProductsAndUser" resultMap="productResult"
+		parameterType="Long">
+		<![CDATA[
+			SELECT R1.*FROM(
+					SELECT product.id as product_id, product.name as product_name, product.content, product.price, product.sale_price, product.image, product.created_at as product_created_at, user.id as user_id, user.email, user.name as user_name, user.birth, user.gender, user.created_at as user_created_at
+					FROM product 
+					JOIN user ON user.id = #{userId}
+					ORDER BY product.created_at
+	        )R1 
+	        LIMIT 6 OFFSET #{morePage}
+        ]]>
+	</select>
+
+	<select id="findProductById" resultMap="productResult"
+		parameterType="Long">
+		SELECT product.id as product_id, product.name as product_name, product.content, product.price, product.sale_price, product.image, product.created_at as product_created_at 
+		FROM product
+		WHERE product.id = #{productId}
+	</select>
+
+	<select id="findProductAndUserByProductIdAndUserId"
+		resultMap="productResult" parameterType="Long">
+		SELECT product.id as product_id, product.name as product_name, product.content,	product.price, product.sale_price, product.image, product.created_at as product_created_at, user.id as user_id, user.email, user.name as user_name, user.birth, user.gender, user.created_at as user_created_at
+		FROM product 
+		JOIN user ON user.id = #{userId}
+		WHERE product.id = #{productId}
+	</select>
+
+	<select id="findProductAndBasketByUserId"
+		resultMap="productResult" parameterType="Long">
+		SELECT product.id as product_id, product.name as product_name, product.content, product.price, product.sale_price, product.image, product.created_at as product_created_at, user.id as user_id, user.email, user.name as user_name, user.birth, user.gender, user.created_at as user_created_at
+		FROM product 
+		JOIN user ON user.id = #{userId}
+		JOIN basket ON basket.user_id=user.id
+		WHERE product.id = basket.product_id
+		GROUP BY product.name
+		ORDER BY basket.created_at
+	</select>
+</mapper>

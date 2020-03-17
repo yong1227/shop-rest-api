@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.simple.shop.repository.UserDAO">
+	<resultMap type="userVO" id="userResult">
+		<id property="id" column="id"/>
+		<result property="email" column="email"/>
+		<result property="name" column="name"/>
+		<result property="birth" column="birth"/>
+		<result property="password" column="password"/>
+		<result property="gender" column="gender"/>
+		<result property="createdAt" column="created_at"/>
+	</resultMap>
+	
+	<resultMap type="tokenVO" id="tokenResult">
+		<result property="userId" column="user_id" />
+		<result property="token" column="token"/>
+		<result property="createdAt" column="created_at"/>
+	</resultMap>
+	
+	<insert id="insertUser" parameterType="userVO" keyProperty="id" useGeneratedKeys="true">
+		<![CDATA[
+			INSERT INTO user (email, name, birth, password, gender)
+			VALUES (#{email},#{name},#{birth},#{password},#{gender})		
+		]]>
+	</insert>
+	
+	<select id="findUserById" parameterType="Long" resultMap="userResult">
+		<![CDATA[
+			SELECT * FROM user WHERE id = #{id} 
+		]]>
+	</select>
+
+	<select id="findUserByEmail" parameterType="String" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM user WHERE email=#{email}
+		]]>
+	</select>
+	
+	<select id="findUserByEmailAndPassword" parameterType="userVO" resultMap="userResult">
+		<![CDATA[
+			SELECT * FROM user WHERE email=#{email} AND password=#{password}
+		]]>
+	</select>
+	
+	<insert id="login" parameterType="tokenVO">
+		<![CDATA[
+			INSERT INTO token (user_id, token)
+			VALUES (#{userId},#{token})		
+		]]>
+	</insert>
+	
+	<select id="findTokenbyToken" parameterType="String" resultMap="tokenResult">
+		<![CDATA[
+			SELECT * FROM token WHERE token=#{token}
+		]]>
+	</select>
+	
+</mapper>
