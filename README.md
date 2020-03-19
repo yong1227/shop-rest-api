@@ -37,7 +37,7 @@ mybatis.mapper-locations=classpath:/mybatis/mappers/*.xml
  ```
  
 # 실행 방법
- - Eclipse : Boot Dashboard --> local --> simpleSns 우클릭 -- start
+ - Eclipse : Boot Dashboard --> local --> shop 프로젝트 우클릭 -- start
  - cmd : 
    - 프로젝트 다운로드 
    - cmd 창에서 해당 프로젝트 경로로 이동
