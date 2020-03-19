@@ -14,7 +14,7 @@
 # 사용 기술
   - Spring Boot
   - Rest Api
-  - Mybatis --> JPA
+  - Mybatis
   - SQL (MySQL)
   
 # 필수 조건 
@@ -26,7 +26,7 @@
  ```
  #jdbc 
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-spring.datasource.url=jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8&serverTimezone=UTC
+spring.datasource.url=jdbc:mysql://localhost:3306/shop?characterEncoding=UTF-8&serverTimezone=UTC
 spring.datasource.username=계정이름
 spring.datasource.password=비밀번호
 
